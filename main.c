@@ -4,6 +4,7 @@
 #include "../profiler.h"
 #include "../shared_data.h"
 #include "neutral_interface.h"
+#include "papi_multiplex_test.h"
 #include <math.h>
 #include <omp.h>
 #include <stdio.h>
@@ -18,9 +19,29 @@ void plot_particle_density(NeutralData* neutral_data, Mesh* mesh, const int tt,
                            const int nparticles, const double elapsed_sim_time);
 
 int main(int argc, char** argv) {
-  if (argc != 2) {
-    TERMINATE("usage: ./neutral.exe <param_file>\n");
+  if (argc != 4) {
+    TERMINATE("usage: ./neutral.exe <param_file> arch mode\n");
   }
+
+  int arch = atoi(argv[2]);
+  char platform[1024];
+  int mode = atoi(argv[3]);
+  char filename[1024];
+
+  if(arch == 0)
+  {
+      sprintf(platform, "kp920");
+      if(mode == 0)
+      {
+          sprintf(filename, "/mnt/share/JKChen/PAPI_multiplex_test/events/%s/%s_events_mpx.txt", platform, platform);
+      }
+      else
+      {
+          sprintf(filename, "/mnt/share/JKChen/PAPI_multiplex_test/events/%s/%s_events_ocoe_%d.txt", platform, platform, mode);
+      }
+  }
+
+  mytest_papi_init(filename, "neutral", mode);
 
   // Store the dimensions of the mesh
   Mesh mesh;
@@ -46,8 +67,12 @@ int main(int argc, char** argv) {
       get_int_parameter("visit_dump", neutral_data.neutral_params_filename);
 
 // Get the number of threads and initialise the random number pool
+#ifdef _OPENMP
 #pragma omp parallel
   { neutral_data.nthreads = omp_get_num_threads(); }
+#else
+    neutral_data.nthreads = 1; 
+#endif
 
   printf("Starting up with %d OpenMP threads.\n", neutral_data.nthreads);
   printf("Loading problem from %s.\n", neutral_data.neutral_params_filename);
@@ -161,6 +186,8 @@ int main(int argc, char** argv) {
     printf("Final Wallclock %.9fs\n", wallclock);
     printf("Elapsed Simulation Time %.6fs\n", elapsed_sim_time);
   }
+
+  mytest_papi_stop();
 
   return 0;
 }

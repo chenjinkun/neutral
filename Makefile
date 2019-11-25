@@ -2,7 +2,8 @@
 KERNELS  					 = omp3
 COMPILER 					 = INTEL
 MPI      					 = no
-OPTIONS  					+= -DTILES -g -DENABLE_PROFILING 
+OPTIONS  					+= -DTILES -g -DENABLE_PROFILING
+# OPTIONS  					+= -DTILES -g
 ARCH_COMPILER_CC   = icc
 
 # Compiler-specific flags
@@ -11,6 +12,7 @@ CFLAGS_INTEL			 = -O3 -qopenmp -no-prec-div -std=gnu99 -DINTEL \
 CFLAGS_INTEL_KNL	 = -O3 -qopenmp -no-prec-div -std=gnu99 -DINTEL \
 										 -xMIC-AVX512 -Wall -qopt-report=5
 CFLAGS_GCC				 = -O3 -std=gnu99 -fopenmp -march=native -Wall
+CFLAGS_GCCKP920               = -O3 -std=gnu99 -march=armv8.2-a+simd -mtune=tsv110 -Wall -I../../../../../ -L../../../../../lib -lmypapi -lpapi
 CFLAGS_GCCTX2			 = -O3 -std=gnu99 -fopenmp -Wall
 CFLAGS_GCC_KNL   	 = -O3 -fopenmp -std=gnu99 \
 										 -mavx512f -mavx512cd -mavx512er -mavx512pf

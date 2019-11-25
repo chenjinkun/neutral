@@ -54,8 +54,13 @@ void handle_particles(const int global_nx, const int global_ny, const int nx,
                       double* energy_deposition_tally) {
 
   int nthreads = 0;
+
+#ifdef _OPENMP
 #pragma omp parallel
   { nthreads = omp_get_num_threads(); }
+#else
+  nthreads = 1;
+#endif
 
   uint64_t nfacets = 0;
   uint64_t ncollisions = 0;
@@ -67,7 +72,11 @@ void handle_particles(const int global_nx, const int global_ny, const int nx,
 // The main particle loop
 #pragma omp parallel reduction(+ : nfacets, ncollisions, nparticles)
   {
+#ifdef _OPENMP
     const int tid = omp_get_thread_num();
+#else
+    const int tid = 0;
+#endif
 
     // Calculate the particles offset, accounting for some remainder
     const int rem = (tid < np_remainder);
