@@ -39,3 +39,6 @@ a.out-openmp-nvptx64-nvidia-cuda
 *.bov
 *.dat
 
+#executable
+neutral.omp3.*
+
