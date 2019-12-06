@@ -10,7 +10,7 @@ then
     mv result* ../../../../../../PAPI_test_result/kp920/neutral/
 
 #test for mpx 20
-    for num in {1..7}
+    for num in {1..8}
     do
         cp ../../../../../events/kp920/kp920_events_mpx_20_$num.txt ../../../../../events/kp920/kp920_events_mpx.txt
         numactl --physcpubind=0 --localalloc ./neutral.omp3.kp920 problems/csp.params 0 0 
@@ -18,7 +18,7 @@ then
     done
 
 #test for mpx 40
-    for num in {1..3}
+    for num in {1..4}
     do
         cp ../../../../../events/kp920/kp920_events_mpx_40_$num.txt ../../../../../events/kp920/kp920_events_mpx.txt
         numactl --physcpubind=0 --localalloc ./neutral.omp3.kp920 problems/csp.params 0 0 
@@ -26,9 +26,12 @@ then
     done
 
 #test for mpx 80
-    cp ../../../../../events/kp920/kp920_events_mpx_80.txt ../../../../../events/kp920/kp920_events_mpx.txt
-    numactl --physcpubind=0 --localalloc ./neutral.omp3.kp920 problems/csp.params 0 0 
-    mv result_neutral_mpx.csv ../../../../../../PAPI_test_result/kp920/neutral/result_neutral_mpx_80.csv
+    for num in {1..2}
+    do
+        cp ../../../../../events/kp920/kp920_events_mpx_80_$num.txt ../../../../../events/kp920/kp920_events_mpx.txt
+        numactl --physcpubind=0 --localalloc ./neutral.omp3.kp920 problems/csp.params 0 0 
+        mv result_neutral_mpx.csv ../../../../../../PAPI_test_result/kp920/neutral/result_neutral_mpx_80_$num.csv
+    done
 
 #test for mpx 155
     cp ../../../../../events/kp920/kp920_events_mpx_155.txt ../../../../../events/kp920/kp920_events_mpx.txt
