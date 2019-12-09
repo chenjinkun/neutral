@@ -40,6 +40,18 @@ int main(int argc, char** argv) {
           sprintf(filename, "/mnt/share/JKChen/PAPI_multiplex_test/events/%s/%s_events_ocoe_%d.txt", platform, platform, mode);
       }
   }
+  else if(arch == 1)
+  {
+      sprintf(platform, "hsw");
+      if(mode == 0)
+      {
+          sprintf(filename, "/chpc/users/JKChen/PAPI_multiplex_test/events/%s/%s_events_mpx.txt", platform, platform);
+      }
+      else
+      {
+          sprintf(filename, "/chpc/users/JKChen/PAPI_multiplex_test/events/%s/%s_events_ocoe_%d.txt", platform, platform, mode);
+      }
+  }
 
   mytest_papi_init(filename, "neutral", mode);
 

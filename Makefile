@@ -11,6 +11,7 @@ CFLAGS_INTEL			 = -O3 -qopenmp -no-prec-div -std=gnu99 -DINTEL \
 										 -Wall -qopt-report=5 -xhost
 CFLAGS_INTEL_KNL	 = -O3 -qopenmp -no-prec-div -std=gnu99 -DINTEL \
 										 -xMIC-AVX512 -Wall -qopt-report=5
+CFLAGS_INTEL_HSW		=	-O3 -no-prec-div -std=gnu99 -DINTEL -Wall -xHost -I../../../../../ -L../../../../../lib -lmypapi -lpapi									 
 CFLAGS_GCC				 = -O3 -std=gnu99 -fopenmp -march=native -Wall
 CFLAGS_GCCKP920               = -O3 -std=gnu99 -march=armv8.2-a+simd -mtune=tsv110 -Wall -I../../../../../ -L../../../../../lib -lmypapi -lpapi
 CFLAGS_GCCTX2			 = -O3 -std=gnu99 -fopenmp -Wall
@@ -103,6 +104,6 @@ make_build_dir:
 	@mkdir -p $(ARCH_BUILD_DIR)/$(KERNELS)
 
 clean:
-	rm -rf $(ARCH_BUILD_DIR)/* neutral.$(KERNELS) *.vtk *.bov \
+	rm -rf $(ARCH_BUILD_DIR)/* neutral.$(KERNELS)* *.vtk *.bov \
 		*.dat *.optrpt *.cub *.ptx *.ap2 *.xf *.ptx1
 
